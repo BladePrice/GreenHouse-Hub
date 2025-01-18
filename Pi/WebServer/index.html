@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Green House</title>
+</head>
+<body>
+    <h1>Light Settings</h1>
+    <form id="settingsForm">
+        <div>
+            <h2>Top Shelf</h2>
+            <label for="tree1-toggle">On/Off:</label>
+            <input type="checkbox" id="tree1-toggle" name="tree1-toggle">
+            <label for="tree1-time">Start time:</label>
+            <input type="time" id="tree1-time" name="tree1-time">
+            <label for="tree1-length">Hours on:</label>
+            <select id="tree1-length">
+                <option label="1">1</option>
+                <option label="2">2</option>
+                <option label="3">3</option>
+                <option label="4">4</option>
+                <option label="5">5</option>
+                <option label="6">6</option>
+                <option label="7">7</option>
+                <option label="8">8</option>
+                <option label="9">9</option>
+                <option label="10">10</option>
+                <option label="11">11</option>
+                <option label="12">12</option>
+            </select>
+        </div>
+        <div>
+            <h2>Upper Middle Shelf</h2>
+            <label for="tree2-toggle">On/Off:</label>
+            <input type="checkbox" id="tree2-toggle" name="tree2-toggle">
+            <label for="tree2-time">Start time:</label>
+            <input type="time" id="tree2-time" name="tree2-time">
+            <label for="tree2-length">Hours on:</label>
+            <select id="tree2-length">
+                <option label="1">1</option>
+                <option label="2">2</option>
+                <option label="3">3</option>
+                <option label="4">4</option>
+                <option label="5">5</option>
+                <option label="6">6</option>
+                <option label="7">7</option>
+                <option label="8">8</option>
+                <option label="9">9</option>
+                <option label="10">10</option>
+                <option label="11">11</option>
+                <option label="12">12</option>
+            </select>
+        </div>
+        <div>
+            <h2>Lower Middle Shelf</h2>
+            <label for="tree3-toggle">On/Off:</label>
+            <input type="checkbox" id="tree3-toggle" name="tree3-toggle">
+            <label for="tree3-time">Start time:</label>
+            <input type="time" id="tree3-time" name="tree3-time">
+            <label for="tree3-length">Hours on:</label>
+            <select id="tree3-length">
+                <option label="1">1</option>
+                <option label="2">2</option>
+                <option label="3">3</option>
+                <option label="4">4</option>
+                <option label="5">5</option>
+                <option label="6">6</option>
+                <option label="7">7</option>
+                <option label="8">8</option>
+                <option label="9">9</option>
+                <option label="10">10</option>
+                <option label="11">11</option>
+                <option label="12">12</option>
+            </select>
+        </div>
+        <div>
+            <h2>Bottom Shelf</h2>
+            <label for="tree4-toggle">On/Off:</label>
+            <input type="checkbox" id="tree4-toggle" name="tree4-toggle">
+            <label for="tree4-time">Start time:</label>
+            <input type="time" id="tree4-time" name="tree4-time">
+            <label for="tree4-length">Hours on:</label>
+            <select id="tree4-length">
+                <option label="1">1</option>
+                <option label="2">2</option>
+                <option label="3">3</option>
+                <option label="4">4</option>
+                <option label="5">5</option>
+                <option label="6">6</option>
+                <option label="7">7</option>
+                <option label="8">8</option>
+                <option label="9">9</option>
+                <option label="10">10</option>
+                <option label="11">11</option>
+                <option label="12">12</option>
+            </select>
+        </div>
+        <button type="button" onclick="saveSettings()">Save Settings</button>
+    </form>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/get-settings')
+            .then(response => response.json())
+            .then(data => {
+                if (data.tree1) {
+                    document.getElementById('tree1-toggle').checked = data.tree1.toggle;
+                    document.getElementById('tree1-time').value = data.tree1.time;
+                    document.getElementById('tree1-length').value = data.tree1.length
+                }
+                if (data.tree2) {
+                    document.getElementById('tree2-toggle').checked = data.tree2.toggle;
+                    document.getElementById('tree2-time').value = data.tree2.time;
+                    document.getElementById('tree2-length').value = data.tree2.length
+                }
+                if (data.tree3) {
+                    document.getElementById('tree3-toggle').checked = data.tree3.toggle;
+                    document.getElementById('tree3-time').value = data.tree3.time;
+                    document.getElementById('tree3-length').value = data.tree3.length
+                }
+                if (data.tree4) {
+                    document.getElementById('tree4-toggle').checked = data.tree4.toggle;
+                    document.getElementById('tree4-time').value = data.tree4.time;
+                    document.getElementById('tree4-length').value = data.tree4.length
+                }
+            })
+            .catch(err => console.error('Error loading settings:', err));
+    });
+
+    function saveSettings() {
+        const settings = {
+            tree1: {
+                toggle: document.getElementById('tree1-toggle').checked,
+                time: document.getElementById('tree1-time').value,
+                length: document.getElementById('tree1-length').value
+            },
+            tree2: {
+                toggle: document.getElementById('tree2-toggle').checked,
+                time: document.getElementById('tree2-time').value,
+                length: document.getElementById('tree2-length').value
+            },
+            tree3: {
+                toggle: document.getElementById('tree3-toggle').checked,
+                time: document.getElementById('tree3-time').value,
+                length: document.getElementById('tree3-length').value
+            },
+            tree4: {
+                toggle: document.getElementById('tree4-toggle').checked,
+                time: document.getElementById('tree4-time').value,
+                length: document.getElementById('tree4-length').value
+            }
+        };
+
+        fetch('/save-settings', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(settings)
+        })
+        .then(response => {
+            if (response.ok) {
+                alert('Settings saved successfully!');
+            } else {
+                alert('Error saving settings.');
+            }
+        });
+    }
+</script>
+</body>
+</html>
