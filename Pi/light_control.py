@@ -3,7 +3,7 @@ import time
 from datetime import datetime
 
 #Declare globals
-FILE = "settings.json"
+FILE = "WebServer/settings.json"
 unmod = {}
 in_use = {}
 
