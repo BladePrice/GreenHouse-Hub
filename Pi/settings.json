@@ -1,1 +1,1 @@
-{"tree1": {"toggle": true, "time": "00:00"}, "tree2": {"toggle": false, "time": "19:32"}, "tree3": {"toggle": false, "time": "03:26"}, "tree4": {"toggle": true, "time": "16:26"}}
+{"tree1": {"toggle": true, "time": "00:00", "length": "2"}, "tree2": {"toggle": false, "time": "19:32", "length": "4"}, "tree3": {"toggle": false, "time": "03:26", "length": "9"}, "tree4": {"toggle": true, "time": "16:26", "length": "12"}}
