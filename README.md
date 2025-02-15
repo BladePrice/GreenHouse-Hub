@@ -6,6 +6,7 @@ Notes left with an * are to have updates when the system is live.
 # Hardware
 * Ohuhu Mini Greenhouse -- Amazon
 * Arduino Leonardo -- Arduino      *Leonardo, or an arduino with four hardware interupts is required*
+* Arduino Relay Shield -- Arduino
 * Headerless Raspberry Pi Zero 2 W -- adafruit
 * Mean Well USA Inc. PID-250B -- Digikey
   * Voltage: 24V/5V
@@ -21,6 +22,10 @@ Notes left with an * are to have updates when the system is live.
 
 # Setup
 We'll be discussing the various hardware setups. I've modified nearlly every piece and this is where I'll be discussing what I did. If the item is not listed it was not modified.
+
+### Ohuhu Mini Greenhouse
+To suit my needs, I've opted to remove the two bottom shelves. I need the additional headspace for baby trees.
+
 ### Arduino & Pi
 Originally, I soldered wires to the pads on the back of the headered raspberry pi, trying to leave the headers be. This did not last long. I ended up ripping the entire 5V pad from the Pi, resulting in a now non-operational micro usb power port. I soldered the wire to the 5V GPIO pin and hated how it looked, so I ened up buying a new headerless Pi Zero 2 off Amazon.
 
@@ -39,4 +44,39 @@ I had a coworker 3D print me some stand offs to mount the units to. I opted to h
 I de-pinned the new fan connector and soldered the temp switch it inline to the fan.
 
 Grounds were abundently used. The P/S has grounded mounting holes, grounding wires were run from each of the P/S mounts to the case and from the case to the mounting board.
+
+### LBW 2024 Grow Lights
+There's two designs for this light, for other uses I have the original more basic version, for the greenhouse I wanted the updated the design. However, the updated design does not have any sort of light defuser. I bought some photography light deffusion film and have removed the light board and put the film over it*
+
+I opted for the tri-head to get more lights for the money. The stand and power supply were set aside; all I want is the lights. I de-soldered the origional power cable and soldered my own. I opted to use 18AWG wire, but it's a bit excessive four the housing. 
+
+# Operation
+To breifly describe the operation of the entire system, we'll start with the box.
+
+The fan will be controlled via the temp switch, running independently to the rest of the system. When the temp switch hits 35C it closes and allows a ground path to the fan, venting the heat out of the box. * In theory this will be adequate to keep the unit cool with the fan cycling on and off as needed.
+
+The Raspberry Pi will host a local webpage with a python HTTP server (it should be noted that python HTTP server should not be allowed access to the internet as there are reportedly numerous vunerabilites in it. Recommend switching to Apache or a VPN for WAN access. I do not need this functionality and thusly did not incorperate it). The web server saves a local .json containing the scheduling for the lights. The light control script reads the .json and issues commands to the arduino according to the schedule. The json is reloaded and compared during each loop. The loop is set to run at the top of every minute, allowing minute level control of the lights. *
+
+The arduino is constantly monitoring for pulled down pins or serial commands to toggle the lights. Due to the desire for button overrides, there is a completely independent pin state monitor. The monitor will checks the state of the pin and compares it to the stored last states. If the monitor detects inequality it prints only the changed relay state to serial. There is additionally a reload command that will ensure the last states are up to date and print the entire relay cluster state. This is used for the live display and reload button on the HTTP Server.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
